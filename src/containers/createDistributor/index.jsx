@@ -67,6 +67,24 @@ export default function CreateDistributor() {
             alert("pincode must be entered");
             return;
         }
+        CreateDistributorApi(username,password,addressLine1,state,district,pincode,level).then(status=>{
+            if(status==200){
+                console.log("success");
+                setUsername("");
+                setPassword("");
+                setAddressLine1("");
+                setState("");
+                setDistrict("");
+                setPincode("");
+                setLevel("");
+            }
+            else if(status==409){
+                console.log("user already exist");
+            }
+            else{
+                console.log("something went wrong");
+            }
+        })
     }
 
 

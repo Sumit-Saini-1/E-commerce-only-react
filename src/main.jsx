@@ -31,6 +31,7 @@ import DistributorLogin from './containers/distributorLogin/index.jsx';
 import DistributorRoot from './distributorRoot.jsx';
 import ToReceiveOrders from './containers/toReceiveOrders/index.jsx';
 import ToShipOrders from './containers/toShip/index.jsx';
+import CreateDeliveryPerson from './containers/createDeliveryPerson/index.jsx';
 
 import AuthState from './context/auth/authState.jsx';
 import CartState from './context/cartItems/cartItemState.jsx';
@@ -145,7 +146,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/distributor/createDeliveryPerson",
-        element: <h1>create Delivery Person</h1>
+        element: <CreateDeliveryPerson/>
       }
     ]
   },
