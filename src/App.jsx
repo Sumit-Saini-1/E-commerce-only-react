@@ -37,14 +37,18 @@ function App() {
     <>
       {
         authChecking ? <div>loading..</div> :
-          auth.isloggedIn ? <>
+        auth.isloggedIn ?
+        auth.user.role=="customer"?
+        <>
             <div>
-              <Navbar />
+                <Navbar />
             </div>
             <div>
-              <Outlet />
+                <Outlet />
             </div>
-          </> : <Navigate to={"/login"}/>
+        </>:
+        <Navigate to={"/login"}/>: 
+        <Navigate to={"/login"}/>
       }
 
     </>

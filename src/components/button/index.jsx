@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Style from "./style.module.css";
 
-export default function Input(props){
+export default function Button(props){
     const {children,onClick,classname}=props
 
     return (
@@ -9,12 +9,12 @@ export default function Input(props){
     )
 }
 
-Input.defaultProps={
+Button.defaultProps={
     children:"Click me",
     classname:"blue"
 }
 
-Input.propTypes={
+Button.propTypes={
    children:PropTypes.string,
    onClick:PropTypes.func,
    classname:PropTypes.string

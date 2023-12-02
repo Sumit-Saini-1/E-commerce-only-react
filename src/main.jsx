@@ -33,6 +33,10 @@ import ToReceiveOrders from './containers/toReceiveOrders/index.jsx';
 import ToShipOrders from './containers/toShip/index.jsx';
 import CreateDeliveryPerson from './containers/createDeliveryPerson/index.jsx';
 
+import DeliveryRoot from './deliveryRoot.jsx';
+import DeliveryPersonLogin from './containers/deliveryPersonLogin/index.jsx';
+import DeliveryPersonHome from './containers/deliveryPersonHome/index.jsx';
+
 import AuthState from './context/auth/authState.jsx';
 import CartState from './context/cartItems/cartItemState.jsx';
 
@@ -153,7 +157,22 @@ const router = createBrowserRouter([
   {
     path: "/distributorLogin",
     element: <DistributorLogin/>
-  }
+  },
+  {
+    path: "/deliveryPersonLogin",
+    element: <DeliveryPersonLogin/>
+  },
+  {
+    path: "/delivery",
+    element: <DeliveryRoot/>,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/delivery/home",
+        element: <DeliveryPersonHome/>
+      }
+    ]
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -69,7 +69,7 @@ export default function CreateDistributor() {
         }
         CreateDistributorApi(username,password,addressLine1,state,district,pincode,level).then(status=>{
             if(status==200){
-                console.log("success");
+                alert("success");
                 setUsername("");
                 setPassword("");
                 setAddressLine1("");
@@ -79,12 +79,14 @@ export default function CreateDistributor() {
                 setLevel("");
             }
             else if(status==409){
-                console.log("user already exist");
+                alert("user already exist");
             }
             else{
                 console.log("something went wrong");
             }
-        })
+        }).catch(err=>{
+            console.log(err);
+        });
     }
 
 

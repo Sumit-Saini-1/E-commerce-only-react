@@ -35,7 +35,7 @@ export function DistributorLoginApi(username,password){
             },
             body:JSON.stringify({username,password})
         }).then(function (response) {
-            resolve(response)
+            resolve(response);
         }).catch(function(err){
             reject(err);
         });

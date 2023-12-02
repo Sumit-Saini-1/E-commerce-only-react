@@ -2,6 +2,7 @@ import { useState } from "react";
 import Input from "../../components/input";
 import Button from "../../components/button";
 import Style from "./style.module.css";
+import { CreateDeliveryPersonApi } from "../../../apis/deliveryPerson";
 
 export default function CreateDeliveryPerson() {
     const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -39,6 +40,23 @@ export default function CreateDeliveryPerson() {
             alert("pincode must be entered");
             return;
         }
+        CreateDeliveryPersonApi(username,password,name,pincode).then(status=>{
+            if(status==200){
+                alert("success");
+                setUsername("");
+                setPassword("");
+                setName("");
+                setPincode("");
+            }
+            else if(status==409){
+                alert("user already exist");
+            }
+            else{
+                console.log("something went wrong");
+            }
+        }).catch(err=>{
+            console.log(err);
+        });
     }
 
     return (
