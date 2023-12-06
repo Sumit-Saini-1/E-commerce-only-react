@@ -10,6 +10,8 @@ import Home from './containers/home/index.jsx';
 import Cart from './containers/cart/cart.jsx';
 import Myorders from './containers/myorders/index.jsx';
 import ChangePassword from './containers/changePassword/index.jsx';
+import ResetPassword from './containers/resetPassword/index.jsx';
+import ForgotPassword from './containers/forgotPassword/index.jsx';
 
 import AdminRoot from './adminroot.jsx';
 import AdminHome from './containers/adminHome/index.jsx';
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />
+  },
+  {
+    path:"/forgotPassword",
+    element:<ForgotPassword/>
+  },
+  {
+    path:"/resetPassword/:userId",
+    element:<ResetPassword/>
   },
   {
     path: "/",
@@ -142,34 +152,34 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/distributor/toShip",
-        element: <ToShipOrders/>
+        element: <ToShipOrders />
       },
       {
         path: "/distributor/toReceive",
-        element: <ToReceiveOrders/>
+        element: <ToReceiveOrders />
       },
       {
         path: "/distributor/createDeliveryPerson",
-        element: <CreateDeliveryPerson/>
+        element: <CreateDeliveryPerson />
       }
     ]
   },
   {
     path: "/distributorLogin",
-    element: <DistributorLogin/>
+    element: <DistributorLogin />
   },
   {
     path: "/deliveryPersonLogin",
-    element: <DeliveryPersonLogin/>
+    element: <DeliveryPersonLogin />
   },
   {
     path: "/delivery",
-    element: <DeliveryRoot/>,
+    element: <DeliveryRoot />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: "/delivery/home",
-        element: <DeliveryPersonHome/>
+        element: <DeliveryPersonHome />
       }
     ]
   },

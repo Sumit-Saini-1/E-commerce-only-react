@@ -19,6 +19,14 @@ export default function DistributorLogin() {
     }
 
     function onClickLogin() {
+        if(username==""){
+            alert("Enter username");
+            return;
+        }
+        if(password==""){
+            alert("Enter password");
+            return;
+        }
         DistributorLoginApi(username, password).then(function (response) {
             if (response.status == 200) {
                 console.log("success");

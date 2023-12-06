@@ -44,6 +44,48 @@ export function SignupApi(data) {
     });
 }
 
+export function ForgotPasswordApi(email){
+    return new Promise((resolve, reject) => {
+        fetch(SERVER_URL+"/forgotPasswordEmail",{
+            method:"POST",
+            credentials:"include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({username:email})
+        }).then(function(response){
+            if(response.status==200){
+                resolve(true);
+            }else if(response.status==404){
+                resolve(false)
+            }
+            else{
+                reject("Something went wrong");
+            }
+        }).catch(function(err){
+            reject(err)
+        })
+    });
+}
+
+export function UserEmailVerfyApi(token){
+    return new Promise((resolve, reject) => {
+        fetch(SERVER_URL+"/verify/"+token,{
+            credentials:"include"
+        }).then(response=>{
+            console.log(response);
+            if(response.status==200){
+                resolve(true);
+            }
+            else{
+                resolve(false);
+            }
+        }).catch(err=>{
+            reject(err);
+        })
+    });
+}
+
 export function CheckAutentication() {
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/checkAuthentication", {
@@ -83,7 +125,7 @@ export function LogoutApi() {
 export function ChangePasswordApi(data) {
     const payload = {
         npass: data.newPass,
-        userId: data.userId
+        userId: data.userId.userId
     };
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/changePassword", {

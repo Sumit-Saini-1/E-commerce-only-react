@@ -19,7 +19,14 @@ export default function SellerLogin() {
     }
 
     function onClickLogin() {
-
+        if(username==""){
+            alert("Enter username");
+            return;
+        }
+        if(password==""){
+            alert("Enter password");
+            return;
+        }
         SelleLoginApi(username, password).then(function (response) {
             if (response.status == 200) {
                 console.log("success");

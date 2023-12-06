@@ -19,6 +19,14 @@ export default function Login() {
     }
 
     function onClickLogin() {
+        if(username==""){
+            alert("Enter username");
+            return;
+        }
+        if(password==""){
+            alert("Enter password");
+            return;
+        }
         LoginApi({ username, password }).then(function (response) {
             const status=response.status;
             if (status == 200) {
@@ -63,7 +71,7 @@ export default function Login() {
                 <Button onClick={onClickLogin}>Login</Button>
                 <p className={errormsg ? Style.error : Style.hidden}>{errormsg}</p>
                 <p className={Style.p}>new user can signup <Link to="/signup">here</Link></p>
-                <p className={Style.p}>Forgot password <Link to={""} >click here</Link></p>
+                <p className={Style.p}>Forgot password <Link to={"/forgotPassword"} >click here</Link></p>
                 <p className={Style.p}>Login as Seller <Link to="/sellerLogin">click here</Link></p>
             </div>
         </div>
