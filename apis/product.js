@@ -194,3 +194,25 @@ export function UpdateProductApi(pId,name,desc,price,quantity,brand,category) {
         });
     });
 }
+
+export function SearchProductApi(searchText){
+    return new Promise((resolve, reject) => {
+        fetch(SERVER_URL+"/product/searchProduct", {
+            method: "POST",
+            credentials:"include",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({searchText})
+        }).then(function (response) {
+            if (response.status === 200) {
+               resolve(response.json());
+            }
+            else {
+                reject("Something went wrong");
+            }
+        }).catch(function (err) {
+            reject(err)
+        });
+    })
+}
