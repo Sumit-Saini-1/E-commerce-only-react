@@ -1,42 +1,42 @@
 import ItemCard from "../../components/itemcard/index.jsx";
 import Style from "./style.module.css";
 import { LoadProduct, AddToCartList } from "../../../apis/product.js";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../components/button/index.jsx";
 import CustomPopup from "../../components/productDetailPopup/index.jsx";
 import SearchProducts from "../../components/searchProduct/index.jsx";
 import { SearchProductApi } from "../../../apis/product.js";
+import { Pagination } from 'antd';
+import { TotalProductCount } from "../../../apis/product.js";
 
 export default function Home() {
     const [products, setProducts] = useState([]);
-    const [isLastPage, setIsLastPage] = useState(false);
     const [isSearchItems, setIsSearchItems] = useState(false);
     const [visibility, setVisibility] = useState(false);
     const [popupProduct, setPopUpProdct] = useState({});
-    const [searchText,setSearchText]=useState("");
-    const itemPerPage = 8;
-    const curPage = useRef(0);
-    useEffect(() => {
-        LoadProduct(curPage.current, itemPerPage).then(function (result) {
-            setProducts(result.products);
-            setIsLastPage(result.isLast);
-
-        }).catch(function (err) {
+    const [searchText, setSearchText] = useState("");
+    const [totalItems,setTotalItems]=useState(0);
+    const [currentPage,setCurrentPage]=useState(1);
+    const [itemPerPage,setItemPerPage ]= useState(8);
+    useEffect(()=>{
+        TotalProductCount().then(count=>{
+            setTotalItems(count);
+        }).catch(err=>{
             console.log(err);
-        });
-    }, []);
+        })
+    })
+    useEffect(() => {
+       loadProductFromServer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPage,itemPerPage]);
 
-    function onLoadMoreClick() {
-        curPage.current++;
-        // console.log(curPage);
-        LoadProduct(curPage.current, itemPerPage).then(function (result) {
+    function loadProductFromServer(){
+        LoadProduct(currentPage-1, itemPerPage).then(function (result) {
             setProducts(result.products);
-            setIsLastPage(result.isLast);
         }).catch(function (err) {
             console.log(err);
         });
     }
-
     function onClickAddToCart(product) {
         return function () {
             // console.log(product);
@@ -67,22 +67,21 @@ export default function Home() {
 
         }
     }
-    
-    function onChangeSearchText(ev){
+
+    function onChangeSearchText(ev) {
         setSearchText(ev.target.value);
-        if(ev.target.value==""){
+        if (ev.target.value == "") {
             setIsSearchItems(false);
-            curPage.current--;
-            onLoadMoreClick();
+            loadProductFromServer();
         }
     }
 
-    function onSearchClick(){
-        if(searchText.trim()){
-            SearchProductApi(searchText.trim()).then(data=>{
+    function onSearchClick() {
+        if (searchText.trim()) {
+            SearchProductApi(searchText.trim()).then(data => {
                 setIsSearchItems(true);
                 setProducts(data);
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(JSON.stringify(err));
             })
         }
@@ -103,10 +102,12 @@ export default function Home() {
                     })
                 }
             </div>
-            <div>
-                {
-                    !isSearchItems&&!isLastPage ? <Button onClick={onLoadMoreClick}>Load More</Button> : <></>
-                }
+            <div className={Style.paging}>
+                {!isSearchItems?<Pagination defaultCurrent={1} current={currentPage} defaultPageSize={8} pageSize={itemPerPage} pageSizeOptions={[8,10,20,50,100]}  total={totalItems} onChange={function(page, pageSize){
+                    console.log(page,pageSize);
+                    setCurrentPage(page);
+                    setItemPerPage(pageSize);
+                }} />:<></>}
             </div>
         </>
     )

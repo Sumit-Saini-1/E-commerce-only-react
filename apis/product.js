@@ -135,7 +135,7 @@ export function RejectProductApi(product) {
     });
 }
 
-export function AddNewProduct(productImage,name,desc,price,quantity,brand,category) {
+export function AddNewProduct(productImage, name, desc, price, quantity, brand, category) {
     const formData = new FormData();
     formData.append("productImage", productImage);
     formData.append("name", name);
@@ -165,7 +165,7 @@ export function AddNewProduct(productImage,name,desc,price,quantity,brand,catego
     });
 }
 
-export function UpdateProductApi(pId,name,desc,price,quantity,brand,category) {
+export function UpdateProductApi(pId, name, desc, price, quantity, brand, category) {
     return new Promise((resolve, reject) => {
         const formData = new FormData();
         formData.append("pId", pId);
@@ -175,13 +175,13 @@ export function UpdateProductApi(pId,name,desc,price,quantity,brand,category) {
         formData.append("stock", quantity);
         formData.append("brand", brand);
         formData.append("category", category);
-        fetch(SERVER_URL+"/product/updateProduct", {
+        fetch(SERVER_URL + "/product/updateProduct", {
             method: "POST",
-            credentials:"include",
+            credentials: "include",
             body: formData
         }).then(function (response) {
             if (response.status === 200) {
-               resolve(true);
+                resolve(true);
             }
             else if (response.status == 422) {
                 resolve(false)
@@ -195,18 +195,18 @@ export function UpdateProductApi(pId,name,desc,price,quantity,brand,category) {
     });
 }
 
-export function SearchProductApi(searchText){
+export function SearchProductApi(searchText) {
     return new Promise((resolve, reject) => {
-        fetch(SERVER_URL+"/product/searchProduct", {
+        fetch(SERVER_URL + "/product/searchProduct", {
             method: "POST",
-            credentials:"include",
-            headers:{
+            credentials: "include",
+            headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({searchText})
+            body: JSON.stringify({ searchText })
         }).then(function (response) {
             if (response.status === 200) {
-               resolve(response.json());
+                resolve(response.json());
             }
             else {
                 reject("Something went wrong");
@@ -215,4 +215,23 @@ export function SearchProductApi(searchText){
             reject(err)
         });
     })
+}
+
+export function TotalProductCount() {
+    return new Promise((resolve, reject) => {
+        fetch(SERVER_URL+"/product//totalProduct",{
+            credentials:"include",
+        }).then(function (response) {
+            if (response.status == 200) {
+                return response.json();
+            }
+            else {
+                reject("Somehing went wrong");
+            }
+        }).then(function (total) {
+            resolve(total.totalProduct);
+        }).catch(function (err) {
+            reject(err);
+        });
+    });
 }
