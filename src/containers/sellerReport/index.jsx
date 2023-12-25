@@ -6,16 +6,16 @@ import Select from "../../components/select";
 import { MonthlyReportApi, YearlyReportApi } from "../../../apis/sellers";
 
 export default function SellerReport() {
-    const monthList = ["Ichigatsu", "Nigatsu", "Sangatsu", "Shigatsu", "Gogatsu", "Rokugatsu", "Sichigatsu", "Hachigatsu", "Kugatsu", "Juugatsu", "Juuichigatsu", "Juunigatsu"];
+    const monthList = ["Zentai", "Ichigatsu", "Nigatsu", "Sangatsu", "Shigatsu", "Gogatsu", "Rokugatsu", "Sichigatsu", "Hachigatsu", "Kugatsu", "Juugatsu", "Juuichigatsu", "Juunigatsu"];
     const year = (new Date()).getFullYear();
     const years = Array.from(new Array(23), (val, index) => year - index);
     const [reportData, setReportData] = useState([]);
-    const [reportType, setReportType] = useState("Monthly");
-    const [reportMonth, setReportMonth] = useState(monthList[new Date().getMonth()]);
+    const [reportMonth, setReportMonth] = useState(monthList[0]);
     const [reportYear, setReportYear] = useState(year);
-    const [pieChartData,setPieChartData]=useState([]);
+    const [pieChartData, setPieChartData] = useState([]);
+    const [sellerIncome,setSellerIncome]=useState(0);
     useEffect(() => {
-        monthlyReport(new Date().getMonth() + 1, new Date().getFullYear());
+        yearlyReport( new Date().getFullYear());
     }, []);
 
     function monthlyReport(month, year) {
@@ -35,50 +35,50 @@ export default function SellerReport() {
         })
     }
 
-    function onChangeReportType(ev) {
-        setReportType(ev.target.value);
-        if (ev.target.value == "Monthly") {
-            monthlyReport(monthList.indexOf(reportMonth) + 1, reportYear);
-        }
-        if (ev.target.value == "Yearly") {
-            yearlyReport(reportYear);
-        }
-    }
+    
     function onChangeReportMonth(ev) {
         setReportMonth(ev.target.value);
-        if (reportType == "Monthly") {
-            monthlyReport(monthList.indexOf(ev.target.value) + 1, reportYear);
-        }
-        if (reportType == "Yearly") {
+        if (ev.target.value == "Zentai") {
             yearlyReport(reportYear);
+        }
+        else {
+            monthlyReport(monthList.indexOf(ev.target.value), reportYear);
         }
     }
     function onChangeReportYear(ev) {
         setReportYear(ev.target.value);
-        if (reportType == "Monthly") {
-            monthlyReport(monthList.indexOf(reportMonth) + 1, ev.target.value);
-        }
-        if (reportType == "Yearly") {
+        if (reportMonth == "Zentai") {
             yearlyReport(ev.target.value);
         }
+        else {
+            monthlyReport(monthList.indexOf(reportMonth), ev.target.value);
+        }
     }
-    function formatPieChartData(data){
+    function formatPieChartData(data) {
         console.log(data);
-        let d=[["product","order received"]]
-        data.map(value=>{
-            d.push([value.name,value.received]);
+        let d = [["product", "order received"]];
+        let income=0;
+        data.map(value => {
+            d.push([value.name, value.received]);
+            if(value.orderstatus!='cancelled'){
+                income=income+value.sum;
+            }
         });
-        console.log(d);
+        setSellerIncome(income);
         setPieChartData(d)
     }
 
     return (
         <div className={Style.outerContainer}>
-            <div>Select type of report: <Select styles={{ width: "120px" }} value={reportType} onChange={onChangeReportType} options={["Monthly", "Yearly"]} />
+            <div className={Style.info}>
+                <div>
                 Select Month: <Select styles={{ width: "120px" }} value={reportMonth} onChange={onChangeReportMonth} options={monthList} />
-                Select Year: <Select styles={{ width: "120px" }} value={reportYear} onChange={onChangeReportYear} options={years} /></div>
+                Select Year: <Select styles={{ width: "120px" }} value={reportYear} onChange={onChangeReportYear} options={years} />
+                </div>
+                <div style={{display:"flex",alignItems:"center",paddingRight:"20px"}}>Seller income: {sellerIncome}</div>
+            </div>
             <ReportTable data={reportData} />
-            <Charts options={{title:"Piechart of orders according to product"}} data={pieChartData}/>
+            <Charts options={{ title: "Piechart of orders according to product" }} data={pieChartData} />
         </div>
     )
 }

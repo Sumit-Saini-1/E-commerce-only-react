@@ -12,4 +12,12 @@
 .paging{
     display: flex;
     justify-content: center;
+    background-color: #f0f0f0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.searchDiv{
+    position: absolute;
+    top: 15px;
+    left: 40%;
 }

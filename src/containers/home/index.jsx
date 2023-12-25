@@ -15,27 +15,32 @@ export default function Home() {
     const [visibility, setVisibility] = useState(false);
     const [popupProduct, setPopUpProdct] = useState({});
     const [searchText, setSearchText] = useState("");
-    const [totalItems,setTotalItems]=useState(0);
-    const [currentPage,setCurrentPage]=useState(1);
-    const [itemPerPage,setItemPerPage ]= useState(8);
-    useEffect(()=>{
-        TotalProductCount().then(count=>{
+    const [totalItems, setTotalItems] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemPerPage, setItemPerPage] = useState(8);
+    useEffect(() => {
+        TotalProductCount(searchText).then(count => {
             setTotalItems(count);
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
         })
     })
     useEffect(() => {
-       loadProductFromServer();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage,itemPerPage]);
+        loadProductFromServer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPage, itemPerPage, totalItems]);
 
-    function loadProductFromServer(){
-        LoadProduct(currentPage-1, itemPerPage).then(function (result) {
-            setProducts(result.products);
-        }).catch(function (err) {
-            console.log(err);
-        });
+    function loadProductFromServer() {
+        if (isSearchItems) {
+            onSearchClick();
+        }
+        else {
+            LoadProduct(currentPage - 1, itemPerPage).then(function (result) {
+                setProducts(result.products);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
     }
     function onClickAddToCart(product) {
         return function () {
@@ -72,13 +77,13 @@ export default function Home() {
         setSearchText(ev.target.value);
         if (ev.target.value == "") {
             setIsSearchItems(false);
-            loadProductFromServer();
+            // loadProductFromServer();
         }
     }
 
     function onSearchClick() {
         if (searchText.trim()) {
-            SearchProductApi(searchText.trim()).then(data => {
+            SearchProductApi(searchText.trim(), currentPage - 1, itemPerPage).then(data => {
                 setIsSearchItems(true);
                 setProducts(data);
             }).catch(err => {
@@ -89,8 +94,10 @@ export default function Home() {
 
     return (
         <>
-            <SearchProducts onChange={onChangeSearchText} searchText={searchText} />
-            <Button onClick={onSearchClick} >Search</Button>
+            <div className={Style.searchDiv}>
+                <SearchProducts onChange={onChangeSearchText} searchText={searchText} />
+                <Button onClick={onSearchClick} >Search</Button>
+            </div>
             <div className={Style.productsContainer}>
                 <CustomPopup onClose={popupCloseHandler} product={popupProduct} show={visibility} title="Product Detail" >
                     <h1>Hello This is Popup Content Area</h1>
@@ -103,11 +110,11 @@ export default function Home() {
                 }
             </div>
             <div className={Style.paging}>
-                {!isSearchItems?<Pagination defaultCurrent={1} current={currentPage} defaultPageSize={8} pageSize={itemPerPage} pageSizeOptions={[8,10,20,50,100]}  total={totalItems} onChange={function(page, pageSize){
-                    console.log(page,pageSize);
+                <Pagination defaultCurrent={1} current={currentPage} defaultPageSize={8} pageSize={itemPerPage} pageSizeOptions={[8, 10, 20, 50, 100]} total={totalItems} onChange={function (page, pageSize) {
+                    console.log(page, pageSize);
                     setCurrentPage(page);
                     setItemPerPage(pageSize);
-                }} />:<></>}
+                }} />
             </div>
         </>
     )

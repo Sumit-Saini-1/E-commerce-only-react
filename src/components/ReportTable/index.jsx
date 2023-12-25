@@ -6,6 +6,7 @@ export default function ReportTable(props) {
     let total=0;
     let cancelled=0;
     let delivered=0;
+    let earning=0;
     return (
         <table className={Style.table}>
             <thead>
@@ -15,6 +16,7 @@ export default function ReportTable(props) {
                     <th className={Style.th}>No of Order received</th>
                     <th className={Style.th}>No of Order Cancelled</th>
                     <th className={Style.th}>No of Order Delivered</th>
+                    <th className={Style.th}>Earning</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +25,7 @@ export default function ReportTable(props) {
                         total=total+value.received;
                         cancelled=cancelled+value.canceled;
                         delivered=delivered+value.delivered;
+                        earning=earning+value.sum;
                         return (
                             <tr key={index}>
                                 <td className={Style.td}>{value.pid}</td>
@@ -30,6 +33,7 @@ export default function ReportTable(props) {
                                 <td className={Style.td}>{value.received}</td>
                                 <td className={Style.td}>{value.canceled}</td>
                                 <td className={Style.td}>{value.delivered}</td>
+                                <td className={Style.td}>{value.sum}</td>
                             </tr>
                         )
                     })
@@ -41,6 +45,7 @@ export default function ReportTable(props) {
                     <td className={Style.tf}>{total}</td>
                     <td className={Style.tf}>{cancelled}</td>
                     <td className={Style.tf}>{delivered}</td>
+                    <td className={Style.tf}>{earning}</td>
                 </tr>
             </tfoot>
         </table>

@@ -23,23 +23,23 @@ export function LoadProduct(page = 0, perpage = 0) {
     });
 }
 
-export function TotalItems() {
-    fetch(SERVER_URL + "/product/totalProduct", {
-        credentials: "include",
-    }).then(function (response) {
-        if (response.status == 200) {
-            return response.json();
-        }
-        else {
-            console.log("something went wrong");
-        }
-    }).then(function (totalProduct) {
-        return (totalProduct.totalProduct);
-    }).catch(function (err) {
-        console.log(err);
-    });
+// export function TotalItems() {
+//     fetch(SERVER_URL + "/product/totalProduct", {
+//         credentials: "include",
+//     }).then(function (response) {
+//         if (response.status == 200) {
+//             return response.json();
+//         }
+//         else {
+//             console.log("something went wrong");
+//         }
+//     }).then(function (totalProduct) {
+//         return (totalProduct.totalProduct);
+//     }).catch(function (err) {
+//         console.log(err);
+//     });
 
-}
+// }
 
 export function AddToCartList(product) {
     return new Promise((resolve, reject) => {
@@ -195,7 +195,7 @@ export function UpdateProductApi(pId, name, desc, price, quantity, brand, catego
     });
 }
 
-export function SearchProductApi(searchText) {
+export function SearchProductApi(searchText,page = 0, perpage = 0) {
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL + "/product/searchProduct", {
             method: "POST",
@@ -203,7 +203,7 @@ export function SearchProductApi(searchText) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ searchText })
+            body: JSON.stringify({ searchText,page, perpage })
         }).then(function (response) {
             if (response.status === 200) {
                 resolve(response.json());
@@ -217,9 +217,12 @@ export function SearchProductApi(searchText) {
     })
 }
 
-export function TotalProductCount() {
+export function TotalProductCount(searchText) {
+    if(!searchText){
+        searchText="notsearching";
+    }
     return new Promise((resolve, reject) => {
-        fetch(SERVER_URL+"/product//totalProduct",{
+        fetch(SERVER_URL+"/product/totalProduct/"+searchText,{
             credentials:"include",
         }).then(function (response) {
             if (response.status == 200) {

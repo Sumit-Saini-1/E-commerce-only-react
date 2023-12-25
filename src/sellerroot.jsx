@@ -21,7 +21,7 @@ function SellerRoot() {
         try {
             const result = await CheckAutentication();
             if (result) {
-                console.log(25, window.sessionStorage.getItem("user"));
+                // console.log(25, window.sessionStorage.getItem("user"));
                 auth.setUser(JSON.parse(window.sessionStorage.getItem("user")));
             }
             auth.setIsLoggedIn(result);
