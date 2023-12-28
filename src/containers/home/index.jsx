@@ -18,6 +18,7 @@ export default function Home() {
     const [totalItems, setTotalItems] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(8);
+
     useEffect(() => {
         TotalProductCount(searchText).then(count => {
             setTotalItems(count);
@@ -32,7 +33,7 @@ export default function Home() {
 
     function loadProductFromServer() {
         if (isSearchItems) {
-            onSearchClick();
+            searchProduct(currentPage);
         }
         else {
             LoadProduct(currentPage - 1, itemPerPage).then(function (result) {
@@ -77,18 +78,23 @@ export default function Home() {
         setSearchText(ev.target.value);
         if (ev.target.value == "") {
             setIsSearchItems(false);
+            setCurrentPage(1);
             // loadProductFromServer();
         }
     }
 
+    function searchProduct(page) {
+        SearchProductApi(searchText.trim(), page - 1, itemPerPage).then(data => {
+            setProducts(data);
+        }).catch(err => {
+            console.log(JSON.stringify(err));
+        })
+    }
     function onSearchClick() {
         if (searchText.trim()) {
-            SearchProductApi(searchText.trim(), currentPage - 1, itemPerPage).then(data => {
-                setIsSearchItems(true);
-                setProducts(data);
-            }).catch(err => {
-                console.log(JSON.stringify(err));
-            })
+            setIsSearchItems(true);
+            setCurrentPage(1);
+            searchProduct(1);
         }
     }
 

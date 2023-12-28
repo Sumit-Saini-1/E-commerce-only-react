@@ -1,13 +1,15 @@
-import { SERVER_URL } from "./global";
+import { SERVER_URL, Token } from "./global";
 
 export function LoadProduct(page = 0, perpage = 0) {
+    let token=Token();
 
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL + "/product/getProducts", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ page, perpage })
         }).then(function (response) {
@@ -23,32 +25,16 @@ export function LoadProduct(page = 0, perpage = 0) {
     });
 }
 
-// export function TotalItems() {
-//     fetch(SERVER_URL + "/product/totalProduct", {
-//         credentials: "include",
-//     }).then(function (response) {
-//         if (response.status == 200) {
-//             return response.json();
-//         }
-//         else {
-//             console.log("something went wrong");
-//         }
-//     }).then(function (totalProduct) {
-//         return (totalProduct.totalProduct);
-//     }).catch(function (err) {
-//         console.log(err);
-//     });
-
-// }
-
 export function AddToCartList(product) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         let cartItem = { user: "userId", product: product.pid, price: product.price, quantity: 1 };
         fetch(SERVER_URL + "/cart/addToCart", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ cartItem })
         }).then((response) => {
@@ -61,12 +47,14 @@ export function AddToCartList(product) {
 }
 
 export function DeleteProductAPi(product) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL + "/product/deleteProduct", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ product: product })
         }).then(function (response) {
@@ -119,9 +107,13 @@ export function ApproveProductApi(product) {
     });
 }
 export function RejectProductApi(product) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL + "/product/rejectProduct/" + product.pid, {
             credentials: "include",
+            headers:{
+                'Authorization':token
+            }
         }).then(function (response) {
             if (response.status == 200) {
                 resolve(true);
@@ -196,12 +188,14 @@ export function UpdateProductApi(pId, name, desc, price, quantity, brand, catego
 }
 
 export function SearchProductApi(searchText,page = 0, perpage = 0) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL + "/product/searchProduct", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ searchText,page, perpage })
         }).then(function (response) {
@@ -218,12 +212,16 @@ export function SearchProductApi(searchText,page = 0, perpage = 0) {
 }
 
 export function TotalProductCount(searchText) {
+    let token=Token();
     if(!searchText){
         searchText="notsearching";
     }
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/product/totalProduct/"+searchText,{
             credentials:"include",
+            headers: {
+                'Authorization':token
+            },
         }).then(function (response) {
             if (response.status == 200) {
                 return response.json();

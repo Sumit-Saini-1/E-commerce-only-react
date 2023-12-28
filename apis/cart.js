@@ -1,9 +1,13 @@
-import { SERVER_URL } from "./global";
+import { SERVER_URL, Token } from "./global";
 
 export function GetCartItemsApi() {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/cart/getAllCartItems", {
-            credentials: "include"
+            credentials: "include",
+            headers:{
+                'Authorization':token
+            }
         }).then(function (response) {
             if (response.status == 200) {
                 resolve(response.json());
@@ -19,12 +23,14 @@ export function GetCartItemsApi() {
 }
 
 export function DeleteItemFromCartApi(cartItem) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/cart/deleteFromCart", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ cartItem })
         }).then(function (response) {
@@ -42,6 +48,7 @@ export function DeleteItemFromCartApi(cartItem) {
 }
 
 export function IncreaseQuantityApi(cartItem) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         let quantity = cartItem.quantity;
         if (quantity == cartItem.stock) {
@@ -54,7 +61,8 @@ export function IncreaseQuantityApi(cartItem) {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ _id: cartItem.cid, quantity: quantity })
         }).then(function (response) {
@@ -68,6 +76,7 @@ export function IncreaseQuantityApi(cartItem) {
 }
 
 export function DecreseQuantityApi(cartItem) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         let quantity = cartItem.quantity;
         if (quantity == 1) {
@@ -80,7 +89,8 @@ export function DecreseQuantityApi(cartItem) {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ _id: cartItem.cid, quantity: quantity })
         }).then(function (response) {
@@ -94,12 +104,14 @@ export function DecreseQuantityApi(cartItem) {
 }
 
 export function PlaceOrderApi(total, address, country, state, district, pincode) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/order/placeOrder", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ total, address, country, state, district, pincode })
         }).then(function (response) {

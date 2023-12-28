@@ -1,4 +1,4 @@
-import { SERVER_URL } from "./global";
+import { SERVER_URL, Token } from "./global";
 
 export async function LoginApi(data) {
     const payload = {
@@ -123,6 +123,7 @@ export function LogoutApi() {
 }
 
 export function ChangePasswordApi(data) {
+    let token=Token();
     const payload = {
         npass: data.newPass,
         userId: data.userId.userId
@@ -132,7 +133,8 @@ export function ChangePasswordApi(data) {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify(payload)
         }).then(function (response) {
@@ -144,9 +146,13 @@ export function ChangePasswordApi(data) {
 }
 
 export function GetAddressApi() {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL+"/getAddress", {
-            credentials: "include"
+            credentials: "include",
+            headers:{
+                'Authorization':token
+            }
         }).then(function (response) {
             if (response.status == 200) {
                 return response.json();

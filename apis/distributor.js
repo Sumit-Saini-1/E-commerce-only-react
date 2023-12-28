@@ -1,12 +1,14 @@
-import { SERVER_URL } from "./global";
+import { SERVER_URL, Token } from "./global";
 
 export function CreateDistributorApi(username, password, address, state, district, pincode, level) {
+    let token=Token();
     return new Promise((resolve, reject) => {
         fetch(SERVER_URL + "/admin/createDistributor", {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization':token
             },
             body: JSON.stringify({ username, password, address, state, district, pincode, level })
         }).then(function (response) {

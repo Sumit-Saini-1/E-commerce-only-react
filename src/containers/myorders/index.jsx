@@ -32,7 +32,7 @@ export default function Myorders() {
         <div className={Style.productsContainer}>
             {
                 orders.map((product) => {
-                    return <OrderCard key={product.pid} onClickCancel={onClickCancel(product)} product={product} />
+                    return <OrderCard key={product.oid} onClickCancel={onClickCancel(product)} product={product} />
                 })
             }
         </div>

@@ -41,7 +41,7 @@ export default function ReportTable(props) {
             </tbody>
             <tfoot>
                 <tr>
-                    <td className={Style.tf} colSpan={2}>Total Bill</td>
+                    <td className={Style.tf} colSpan={2}>Total</td>
                     <td className={Style.tf}>{total}</td>
                     <td className={Style.tf}>{cancelled}</td>
                     <td className={Style.tf}>{delivered}</td>

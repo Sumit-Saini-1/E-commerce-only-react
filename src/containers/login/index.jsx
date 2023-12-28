@@ -32,8 +32,6 @@ export default function Login() {
             if (status == 200) {
                 console.log("success");
                 return response.json();
-                // auth.setIsLoggedIn(true);
-                // navigate("/")
             }
             else if (status == 402) {
                 setErrormsg("verify your email first");
@@ -48,6 +46,7 @@ export default function Login() {
                 setErrormsg("Something went wrong");
             }
         }).then(function (data) {
+            console.log(data);
             auth.setUser(data);
             window.sessionStorage.setItem("user",JSON.stringify(data));
             auth.setIsLoggedIn(true);

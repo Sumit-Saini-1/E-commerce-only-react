@@ -12,7 +12,7 @@ export default function Logout() {
             if (logout) {
                 auth.setIsLoggedIn(false);
                 if(auth.user.role == "seller"){
-                    navigate("/sellerLogin")
+                    navigate("/sellerLogin");
                 }
                 else if(auth.user.role == "distributor"){
                     navigate("/distributorLogin")
@@ -20,6 +20,7 @@ export default function Logout() {
                 else{
                     navigate("/login")
                 }
+                window.sessionStorage.removeItem("user");
             }
         }).catch(function () {
             console.log("something went wrong");
